@@ -40,7 +40,7 @@ exports.load = function (req, res, next, quizId) {
 //GET /quizzes/randomplay
 
 exports.playRandom = function(req, res, next){
-   score=0;
+
     models.Quiz.findAll()
     .then(function (allQuizzes) {
         numberQ= Math.floor((Math.random() * allQuizzes.length) + 1);
@@ -239,7 +239,7 @@ exports.randomcheck= function (req, res, next) {
     var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
 
     if(result){
-        score++;
+        score=1;
         acertadas.push(numberQ);
     }
 
