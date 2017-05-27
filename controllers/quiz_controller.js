@@ -239,12 +239,12 @@ exports.randomcheck= function (req, res, next) {
     var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
 
     if(result){
-        score=1;
+        score=++;
         acertadas.push(numberQ);
     }
 
     res.render('quizzes/random_result', {
-        score: score,
+        score: 0,
         quiz: req.quiz,
         result: result,
         answer: answer
