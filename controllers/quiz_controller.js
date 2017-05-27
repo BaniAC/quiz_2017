@@ -18,6 +18,7 @@ app.use(session({
 
 var acertadas=[];
 var score=0;
+var score2=0;
 var numberQ=null;
 
 // Autoload el quiz asociado a :quizId
@@ -58,7 +59,8 @@ exports.playRandom = function(req, res, next){
             .then(function (quiz) {
                 if (quiz) {
                     req.quiz = quiz;
-                    res.render('quizzes/randomplay', {score: score, quiz: quiz});
+                    res.render('quizzes/randomplay', {score: score2, quiz: quiz});
+                    
                     
                 } else {
                     throw new Error('No existe ningún quiz con id=' + quizId);
@@ -68,7 +70,7 @@ exports.playRandom = function(req, res, next){
                 next(error);
             });
         }else{
-            res.render('quizzes/random_nomore', {score: score});
+            res.render('quizzes/random_nomore', {score: score2});
             score=0;
             acertadas=[];
         }
@@ -239,12 +241,15 @@ exports.randomcheck= function (req, res, next) {
     var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
 
     if(result){
-        score++;
+        score2++;
+        score=1;
         acertadas.push(numberQ);
+    }else{
+        score=0;
     }
 
     res.render('quizzes/random_result', {
-        score: 0,
+        score: score,
         quiz: req.quiz,
         result: result,
         answer: answer
