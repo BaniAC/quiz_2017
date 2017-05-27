@@ -1,5 +1,8 @@
+
 var express = require('express');
 var router = express.Router();
+var models = require("../models");
+var Sequelize = require('sequelize');
 
 var quizController = require('../controllers/quiz_controller');
 
@@ -12,6 +15,14 @@ router.get('/', function(req, res, next) {
 router.get('/author', function(req, res, next) {
     res.render('author');
 });
+
+/* GET play page. */
+router.get('/quizzes/random_play', quizController.playRandom);
+
+//GET result random page
+
+router.get('/quizzes/randomcheck/:quizId(\\d+)/', quizController.randomcheck);
+
 
 
 // Autoload de rutas que usen :quizId

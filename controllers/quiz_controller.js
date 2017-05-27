@@ -3,6 +3,23 @@ var Sequelize = require('sequelize');
 
 var paginate = require('../helpers/paginate').paginate;
 
+var express = require('express');
+
+var session = require('express-session');
+
+var app = express();
+
+app.use(session({
+  secret: 'Quiz 2017',
+  resave: false,
+  saveUninitialized: true,
+  overwrite:false
+}));
+
+var acertadas=[];
+var score=0;
+var numberQ=null;
+
 // Autoload el quiz asociado a :quizId
 exports.load = function (req, res, next, quizId) {
 
@@ -20,6 +37,45 @@ exports.load = function (req, res, next, quizId) {
     });
 };
 
+//GET /quizzes/random_play
+
+exports.playRandom = function(req, res, next){
+   
+    models.Quiz.findAll()
+    .then(function (allQuizzes) {
+        numberQ= Math.floor((Math.random() * allQuizzes.length) + 1);
+       console.log(acertadas);
+       //var ids = req.session.ids || []; 
+       console.log(acertadas.length+1);
+       console.log(allQuizzes.length+1);
+       if(acertadas.length!==allQuizzes.length){
+        while(acertadas.indexOf(numberQ)!==-1){
+            numberQ= Math.floor((Math.random() * allQuizzes.length) + 1);
+        }
+            
+            
+            models.Quiz.findById(numberQ)
+            .then(function (quiz) {
+                if (quiz) {
+                    req.quiz = quiz;
+                    res.render('quizzes/random_play', {score: score, quiz: quiz});
+                    
+                } else {
+                    throw new Error('No existe ningún quiz con id=' + quizId);
+                }
+            })
+            .catch(function (error) {
+                next(error);
+            });
+        }else{
+            res.render('quizzes/random_nomore', {score: score});
+            score=0;
+            acertadas=[];
+        }
+       
+       
+    });
+}
 
 // GET /quizzes
 exports.index = function (req, res, next) {
@@ -173,6 +229,25 @@ exports.play = function (req, res, next) {
     });
 };
 
+//GET /quizzes/randomcheck/:quizId
+exports.randomcheck= function (req, res, next) {
+
+    var answer = req.query.answer || "";
+
+    var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
+
+    if(result){
+        score++;
+        acertadas.push(numberQ);
+    }
+
+    res.render('quizzes/random_result', {
+        score: score,
+        quiz: req.quiz,
+        result: result,
+        answer: answer
+    });
+};
 
 // GET /quizzes/:quizId/check
 exports.check = function (req, res, next) {
@@ -187,3 +262,4 @@ exports.check = function (req, res, next) {
         answer: answer
     });
 };
+
