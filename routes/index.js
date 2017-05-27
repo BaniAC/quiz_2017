@@ -17,7 +17,7 @@ router.get('/author', function(req, res, next) {
 });
 
 /* GET play page. */
-router.get('/quizzes/random_play', quizController.playRandom);
+router.get('/quizzes/randomplay', quizController.playRandom);
 
 //GET result random page
 

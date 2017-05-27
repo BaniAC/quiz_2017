@@ -37,7 +37,7 @@ exports.load = function (req, res, next, quizId) {
     });
 };
 
-//GET /quizzes/random_play
+//GET /quizzes/randomplay
 
 exports.playRandom = function(req, res, next){
    
@@ -58,7 +58,7 @@ exports.playRandom = function(req, res, next){
             .then(function (quiz) {
                 if (quiz) {
                     req.quiz = quiz;
-                    res.render('quizzes/random_play', {score: score, quiz: quiz});
+                    res.render('quizzes/randomplay', {score: score, quiz: quiz});
                     
                 } else {
                     throw new Error('No existe ningún quiz con id=' + quizId);
@@ -76,6 +76,8 @@ exports.playRandom = function(req, res, next){
        
     });
 }
+
+
 
 // GET /quizzes
 exports.index = function (req, res, next) {
