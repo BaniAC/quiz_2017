@@ -239,7 +239,7 @@ exports.randomcheck= function (req, res, next) {
     var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
 
     if(result){
-        score=++;
+        score++;
         acertadas.push(numberQ);
     }
 
