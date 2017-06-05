@@ -36,11 +36,15 @@ exports.new = function (req, res, next) {
 
 // POST /quizzes/:quizId/tips
 exports.create = function (req, res, next) {
+    var userId = req.session.user && req.session.user.id || 0;
 
     var tip = models.Tip.build(
         {
             text: req.body.text,
-            QuizId: req.quiz.id
+            QuizId: req.quiz.id,
+            accepted: true,
+            UserId: userId
+
         });
 
     tip.save()
