@@ -48,6 +48,11 @@ router.get('/author', function (req, res, next) {
     res.render('author');
 });
 
+// Pagina de Ayuda
+router.get('/help', function (req, res, next) {
+    res.render('help');
+});
+
 /* GET play page. */
 router.get('/quizzes/randomplay', quizController.playRandom);
 
